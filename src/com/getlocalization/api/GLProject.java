@@ -15,7 +15,7 @@ public class GLProject {
 	 * 
 	 * @param projectName
 	 */
-	void GLProject(String projectName, String username, String password)
+	public GLProject(String projectName, String username, String password)
 	{
 		this.projectName = projectName;
 		this.setUsername(username);
