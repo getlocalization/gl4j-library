@@ -34,6 +34,7 @@ public class GLMasterFile extends File {
 	 * a call to server if data is not available.
 	 * 
 	 * @return true if file already exists on server.
+	 * @throws GLException
 	 */
 	public boolean isAvailableRemotely() throws GLException
 	{
@@ -68,6 +69,10 @@ public class GLMasterFile extends File {
 		}
 	}
 	
+	/**
+	 * Pushes (adds or updates) master file to Get Localization. 
+	 * @throws GLException
+	 */
 	public void push() throws GLException
 	{
 		if(isAvailableRemotely())
