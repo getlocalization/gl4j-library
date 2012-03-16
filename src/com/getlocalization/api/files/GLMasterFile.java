@@ -1,7 +1,5 @@
 package com.getlocalization.api.files;
 
-import static org.junit.Assert.fail;
-
 import java.io.*;
 import java.util.Enumeration;
 

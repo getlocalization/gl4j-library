@@ -1,7 +1,5 @@
 package com.getlocalization.api.files;
 
-import static org.junit.Assert.fail;
-
 import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
@@ -50,10 +48,12 @@ public class GLTranslations {
 		}
 		catch(IOException io)
 		{
+			io.printStackTrace();
 			throw new GLException("Unable to save translations: " + io.getMessage());
 		}
 		catch(Exception e)
 		{
+			e.printStackTrace();
 			throw new GLException("Unable to download translations: " + e.getMessage());
 		}
 	}

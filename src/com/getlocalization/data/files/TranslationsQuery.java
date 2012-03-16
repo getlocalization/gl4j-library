@@ -29,6 +29,7 @@ public class TranslationsQuery extends Query {
 			byte[] zip = getFile(url);
 			
 			zipFile = File.createTempFile("getlocalization", ".zip");
+			System.out.println("zip file location:" + zipFile.getAbsolutePath());
 			FileOutputStream fos = new FileOutputStream(zipFile);
 			fos.write(zip);
 			fos.close();

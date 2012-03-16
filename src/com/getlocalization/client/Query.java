@@ -88,7 +88,7 @@ public abstract class Query {
 		if (entity != null) {
 		    InputStream instream = entity.getContent();
 		    int l;
-		    byte[] tmp = new byte[2048];
+		    byte[] tmp = new byte[1];
 		    while ((l = instream.read(tmp)) != -1) {
 		    	bos.write(tmp);
 		    }
