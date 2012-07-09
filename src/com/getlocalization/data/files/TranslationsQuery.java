@@ -1,6 +1,7 @@
 package com.getlocalization.data.files;
 
 import com.getlocalization.client.Query;
+import com.getlocalization.client.QueryException;
 import com.getlocalization.client.QuerySecurityException;
 
 import java.io.*;
@@ -21,7 +22,7 @@ public class TranslationsQuery extends Query {
 	}
 	
 	@Override
-	public void doQuery() throws IOException {
+	public void doQuery() throws QueryException, IOException {
 		try
 		{
 			String url = "https://www.getlocalization.com/" + projectId + "/api/translations/zip";
@@ -29,7 +30,6 @@ public class TranslationsQuery extends Query {
 			byte[] zip = getFile(url);
 			
 			zipFile = File.createTempFile("getlocalization", ".zip");
-			System.out.println("zip file location:" + zipFile.getAbsolutePath());
 			FileOutputStream fos = new FileOutputStream(zipFile);
 			fos.write(zip);
 			fos.close();

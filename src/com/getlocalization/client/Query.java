@@ -31,7 +31,7 @@ public abstract class Query {
 		this.password = password;
 	}
 	
-	public int postFile(File file, String url) throws IOException, QuerySecurityException
+	public int postFile(File file, String url) throws IOException, QuerySecurityException, QueryException
 	{
 		if(forcedSSL && !url.startsWith("https"))
 			throw new QuerySecurityException("SSL is required with basic auth");
@@ -61,12 +61,17 @@ public abstract class Query {
 			System.out.println(EntityUtils.toString(resEntity));
 		}
 		
+		int status = response.getStatusLine().getStatusCode();
+		
 		httpclient.getConnectionManager().shutdown();
 		
-		return response.getStatusLine().getStatusCode();
+		if(status != 200)
+			throw new QueryException(EntityUtils.toString(resEntity), status);
+		
+		return status;
 	}
 	
-	public byte[] getFile(String url) throws IOException, QuerySecurityException
+	public byte[] getFile(String url) throws IOException, QuerySecurityException, QueryException
 	{
 		if(forcedSSL && !url.startsWith("https"))
 			throw new QuerySecurityException("SSL is required with basic auth");
@@ -93,6 +98,11 @@ public abstract class Query {
 		    	bos.write(tmp);
 		    }
 		}
+		
+		int status = response.getStatusLine().getStatusCode();
+		
+		if(status != 200)
+			throw new QueryException(new String(bos.toByteArray()), status);
 		
 		return bos.toByteArray();
 	}

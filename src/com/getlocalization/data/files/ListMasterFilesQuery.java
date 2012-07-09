@@ -44,7 +44,7 @@ public class ListMasterFilesQuery extends Query {
 			}
 			catch(JSONException jse)
 			{
-				throw new QueryException("Invalid response:" + new String(filesJson));
+				throw new QueryException("Invalid response:" + new String(filesJson), 0);
 			}
 			
 		}

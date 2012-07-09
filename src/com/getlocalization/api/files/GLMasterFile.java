@@ -5,6 +5,7 @@ import java.util.Enumeration;
 
 import com.getlocalization.api.GLException;
 import com.getlocalization.api.GLProject;
+import com.getlocalization.client.QueryException;
 import com.getlocalization.data.files.CreateMasterFileQuery;
 import com.getlocalization.data.files.ListMasterFilesQuery;
 import com.getlocalization.data.files.UpdateMasterFileQuery;
@@ -60,6 +61,12 @@ public class GLMasterFile extends File {
 			createdToServer = success;
 			
 			return createdToServer;
+		}
+		catch(QueryException e) {
+			if(e.getStatusCode() == 401)
+				throw new GLException("Authentication error, please check your username and password" + e.getMessage());
+			else
+				throw new GLException("Error when processing the query: " + e.getMessage());
 		}
 		catch(Exception e)
 		{

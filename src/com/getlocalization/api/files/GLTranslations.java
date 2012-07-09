@@ -6,6 +6,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import com.getlocalization.api.*;
 import com.getlocalization.api.files.*;
+import com.getlocalization.client.QueryException;
 import com.getlocalization.data.files.TranslationsQuery;
 
 /**
@@ -45,6 +46,46 @@ public class GLTranslations {
 			File zipFile = query.getTranslationsZipFile();
 			
 			unzip(zipFile, new File(targetDirectory).getAbsolutePath());
+		}
+		catch(IOException io)
+		{
+			io.printStackTrace();
+			throw new GLException("Unable to save translations: " + io.getMessage());
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			throw new GLException("Unable to download translations: " + e.getMessage());
+		}
+	}
+	
+	/**
+	 * Pull the translations from server to target directory but don't unzip them. Note that request
+	 * may take some time as translated files are generated on the server-side and
+	 * depending of the load it's possible but unlikely that call immediately throws 
+	 * GLServerBusyException which means you should try again in a moment.
+	 * 
+	 * @param targetDirectory
+	 * @throws GLException, GLServerBusyException
+	 */
+	public File pull() throws GLException, GLServerBusyException
+	{
+		TranslationsQuery query = new TranslationsQuery(myProject.getProjectName());
+		query.setBasicAuth(myProject.getUsername(), myProject.getPassword());
+		
+		try
+		{
+			query.doQuery();
+			
+			File zipFile = query.getTranslationsZipFile();
+			
+			return zipFile;
+		}
+		catch(QueryException e) {
+			if(e.getStatusCode() == 401)
+				throw new GLException("Authentication error, please check your username and password" + e.getMessage());
+			else
+				throw new GLException("Error when processing the query: " + e.getMessage());
 		}
 		catch(IOException io)
 		{

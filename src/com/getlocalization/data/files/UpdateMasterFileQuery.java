@@ -1,6 +1,7 @@
 package com.getlocalization.data.files;
 
 import com.getlocalization.client.Query;
+import com.getlocalization.client.QueryException;
 import com.getlocalization.client.QuerySecurityException;
 
 import java.io.*;
@@ -23,7 +24,7 @@ public class UpdateMasterFileQuery extends Query {
 	}
 	
 	@Override
-	public void doQuery() throws IOException {
+	public void doQuery() throws QueryException, IOException {
 		try
 		{
 			String url = "https://www.getlocalization.com/" + projectId + "/api/update-master";
