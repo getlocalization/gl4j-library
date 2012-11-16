@@ -1,14 +1,14 @@
-package com.getlocalization.data.files.tests;
+package com.getlocalization.data.files;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.getlocalization.data.files.UpdateMasterFileQuery;
+import com.getlocalization.data.files.CreateMasterFileQuery;
 
 import java.io.File;
 
-public class TestUpdateMasterFileQuery {
+public class TestCreateMasterFileQuery {
 
 	@Test
 	public void test() {
@@ -17,7 +17,7 @@ public class TestUpdateMasterFileQuery {
 		
 		System.out.println("Loading test file:" + file.getAbsolutePath());
 		
-		UpdateMasterFileQuery query = new UpdateMasterFileQuery(file, "javatestsuite");
+		CreateMasterFileQuery query = new CreateMasterFileQuery(file, "javatestsuite", "javaproperties", "en");
 		query.setBasicAuth("javatestuser", "asdf1234");
 		
 		try

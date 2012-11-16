@@ -1,4 +1,4 @@
-package com.getlocalization.api.files.tests;
+package com.getlocalization.api.files;
 
 import static org.junit.Assert.*;
 
