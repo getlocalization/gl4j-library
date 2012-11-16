@@ -9,8 +9,12 @@ import java.io.*;
 import java.util.zip.*;
 import java.util.*;
 import org.json.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ListMasterFilesQuery extends Query {
+  
+  private static Logger log = LoggerFactory.getLogger(ListMasterFilesQuery.class); 
 
 	/**
 	 * Update an existing master file to given Get Localization project. 
@@ -51,7 +55,7 @@ public class ListMasterFilesQuery extends Query {
 		catch(QuerySecurityException cse)
 		{
 			// Making sure that URL starts with https.
-			cse.printStackTrace();
+			log.warn(null, cse);
 		}
 	}
 	

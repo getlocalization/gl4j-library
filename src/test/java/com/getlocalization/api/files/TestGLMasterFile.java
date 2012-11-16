@@ -25,7 +25,7 @@ public class TestGLMasterFile {
 		
 		try
 		{
-			File t1 = new File("testdata/master-file.properties");
+			File t1 = new File("src/test/resources/master-file.properties");
 			File t2 = File.createTempFile("testfile", ".properties");
 			
 			copyFile(t1, t2);

@@ -17,8 +17,12 @@ import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.util.EntityUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Query {
+  
+  private static Logger log = LoggerFactory.getLogger(Query.class);
 	public Query()
 	{
 		this.forcedSSL = false;
@@ -36,38 +40,46 @@ public abstract class Query {
 		if(forcedSSL && !url.startsWith("https"))
 			throw new QuerySecurityException("SSL is required with basic auth");
 		
+		int status = 0;
 		DefaultHttpClient httpclient = new DefaultHttpClient();
-		httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
-
-		 httpclient.getCredentialsProvider().setCredentials(
-                 new AuthScope(AuthScope.ANY_HOST, 443), 
-                 new UsernamePasswordCredentials(username, password));
-
-		HttpPost httppost = new HttpPost(url);
-		
-		MultipartEntity mpEntity = new MultipartEntity();
-		
-		System.out.println("Posting file:" + file.getAbsolutePath());
-		
-		ContentBody cbFile = new FileBody(file, file.getName(), "text/plain", "utf8");
-		mpEntity.addPart("file", cbFile);
-
-		httppost.setEntity(mpEntity);
-
-		HttpResponse response = httpclient.execute(httppost);
-		HttpEntity resEntity = response.getEntity();
-
-		if (resEntity != null) {
-			System.out.println(EntityUtils.toString(resEntity));
+		try {
+  		httpclient.getParams().setParameter(CoreProtocolPNames.PROTOCOL_VERSION, HttpVersion.HTTP_1_1);
+  
+  		 httpclient.getCredentialsProvider().setCredentials(
+                   new AuthScope(AuthScope.ANY_HOST, 443), 
+                   new UsernamePasswordCredentials(username, password));
+  
+  		HttpPost httppost = new HttpPost(url);
+  		
+  		MultipartEntity mpEntity = new MultipartEntity();
+  		
+  		log.info("Posting file:" + file.getAbsolutePath());
+  		
+  		ContentBody cbFile = new FileBody(file, file.getName(), "text/plain", "utf8");
+  		mpEntity.addPart("file", cbFile);
+  
+  		httppost.setEntity(mpEntity);
+  
+  		HttpResponse response = httpclient.execute(httppost);
+  		HttpEntity resEntity = response.getEntity();
+  
+  		String resString = null;
+  		if (resEntity != null && log.isInfoEnabled()) {
+  		  resString = EntityUtils.toString(resEntity); 
+  			log.info(resString);
+  		}
+  		
+  		status = response.getStatusLine().getStatusCode();
+  		
+  		if(status != 200) {
+  		  if (resString == null) {
+  		    resString = EntityUtils.toString(resEntity);
+  		  }
+        throw new QueryException(resString, status);
+  		}
+		} finally {
+		  httpclient.getConnectionManager().shutdown();
 		}
-		
-		int status = response.getStatusLine().getStatusCode();
-		
-		httpclient.getConnectionManager().shutdown();
-		
-		if(status != 200)
-			throw new QueryException(EntityUtils.toString(resEntity), status);
-		
 		return status;
 	}
 	

@@ -6,7 +6,12 @@ import com.getlocalization.client.QuerySecurityException;
 
 import java.io.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class CreateMasterFileQuery extends Query {
+  
+  private static Logger log = LoggerFactory.getLogger(CreateMasterFileQuery.class);
 
 	/**
 	 * Creates new master file to given Get Localization project. 
@@ -37,7 +42,7 @@ public class CreateMasterFileQuery extends Query {
 		catch(QuerySecurityException cse)
 		{
 			// Making sure that URL starts with https.
-			cse.printStackTrace();
+		  log.warn(null, cse);
 		}
 	}
 

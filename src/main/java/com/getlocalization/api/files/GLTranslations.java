@@ -4,6 +4,10 @@ import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.getlocalization.api.*;
 import com.getlocalization.api.files.*;
 import com.getlocalization.client.QueryException;
@@ -14,6 +18,8 @@ import com.getlocalization.data.files.TranslationsQuery;
  *
  */
 public class GLTranslations {
+  
+  private static Logger log = LoggerFactory.getLogger(GLTranslations.class);
 	
 	/**
 	 * Creates a new <i>GLTranslations</i> instance.
@@ -49,12 +55,12 @@ public class GLTranslations {
 		}
 		catch(IOException io)
 		{
-			io.printStackTrace();
+			log.warn(null, io);
 			throw new GLException("Unable to save translations: " + io.getMessage());
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+			log.warn(null,e);
 			throw new GLException("Unable to download translations: " + e.getMessage());
 		}
 	}
@@ -89,12 +95,12 @@ public class GLTranslations {
 		}
 		catch(IOException io)
 		{
-			io.printStackTrace();
+		  log.warn(null, io);
 			throw new GLException("Unable to save translations: " + io.getMessage());
 		}
 		catch(Exception e)
 		{
-			e.printStackTrace();
+		  log.warn(null, e);
 			throw new GLException("Unable to download translations: " + e.getMessage());
 		}
 	}

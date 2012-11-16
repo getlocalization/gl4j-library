@@ -6,38 +6,29 @@ import java.util.Enumeration;
 
 import org.junit.Test;
 
-import com.getlocalization.data.files.ListMasterFilesQuery;
-
 public class TestListMasterFilesQuery {
 
 	@Test
-	public void test() {
-		
+	public void test() throws Exception {
+		// TODO this test depends on the master file already being uploaded, not good
+	  
 		ListMasterFilesQuery query = new ListMasterFilesQuery("javatestsuite");
 		query.setBasicAuth("javatestuser", "asdf1234");
 		
-		try
+		query.doQuery();
+		
+		Enumeration<?> e = query.getMasterFiles();
+		
+		while(e.hasMoreElements())
 		{
-			query.doQuery();
+			String name = (String)e.nextElement();
 			
-			Enumeration e = query.getMasterFiles();
-			
-			boolean success = false;
-			while(e.hasMoreElements())
-			{
-				String name = (String)e.nextElement();
-				
-				if(name.equals("master-file.properties"))
-					success = true;
+			if(name.equals("master-file.properties")) {
+				return;
 			}
-			
-			if(!success)
-				fail("Cannot find master-file.properties from project");
 		}
-		catch(Exception e)
-		{
-			fail("Exception" + e.getMessage());
-		}
+		
+		fail("Cannot find master-file.properties from project");
 	}
 
 }

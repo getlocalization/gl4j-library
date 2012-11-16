@@ -1,33 +1,22 @@
 package com.getlocalization.data.files;
 
-import static org.junit.Assert.*;
+import java.io.File;
 
 import org.junit.Test;
 
-import com.getlocalization.data.files.CreateMasterFileQuery;
-
-import java.io.File;
-
 public class TestCreateMasterFileQuery {
+  
+  // TODO This test fails if the master file already exists
 
 	@Test
-	public void test() {
+	public void test() throws Exception {
 		
-		File file = new File("testdata/master-file.properties");
-		
-		System.out.println("Loading test file:" + file.getAbsolutePath());
+		File file = new File("src/test/resources/master-file.properties");
 		
 		CreateMasterFileQuery query = new CreateMasterFileQuery(file, "javatestsuite", "javaproperties", "en");
 		query.setBasicAuth("javatestuser", "asdf1234");
 		
-		try
-		{
-			query.doQuery();
-		}
-		catch(Exception e)
-		{
-			fail("Exception" + e.getMessage());
-		}
+		query.doQuery();
 	}
 
 }

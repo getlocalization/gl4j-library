@@ -1,33 +1,20 @@
 package com.getlocalization.data.files;
 
-import static org.junit.Assert.*;
+import java.io.File;
 
 import org.junit.Test;
 
-import com.getlocalization.data.files.UpdateMasterFileQuery;
-
-import java.io.File;
-
 public class TestUpdateMasterFileQuery {
-
-	@Test
-	public void test() {
+	
+  @Test
+	public void test() throws Exception {
 		
-		File file = new File("testdata/master-file.properties");
-		
-		System.out.println("Loading test file:" + file.getAbsolutePath());
+		File file = new File("src/test/resources/master-file.properties");
 		
 		UpdateMasterFileQuery query = new UpdateMasterFileQuery(file, "javatestsuite");
 		query.setBasicAuth("javatestuser", "asdf1234");
 		
-		try
-		{
-			query.doQuery();
-		}
-		catch(Exception e)
-		{
-			fail("Exception" + e.getMessage());
-		}
+		query.doQuery();
 	}
 
 }

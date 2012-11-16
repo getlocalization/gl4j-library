@@ -17,7 +17,8 @@
   <description>Get Localization Java API</description>
 
   <properties>
-    <http.components.version>4.1.2</http.components.version>
+    <http.components.version>4.2.2</http.components.version>
+    <slf4j-api.version>1.7.2</slf4j-api.version>
   </properties>
 
   <developers>
@@ -33,7 +34,17 @@
       <url>http://github.com/maddingo</url>
     </contributor>
   </contributors>
-  
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j-api.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+    
   <dependencies>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
@@ -49,6 +60,16 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.10</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>${slf4j-api.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
