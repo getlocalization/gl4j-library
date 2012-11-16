@@ -1,8 +1,7 @@
 package com.getlocalization.data.files;
 
 import static org.junit.Assert.*;
-
-import java.util.Enumeration;
+import static org.junit.matchers.JUnitMatchers.*;
 
 import org.junit.Test;
 
@@ -17,18 +16,7 @@ public class TestListMasterFilesQuery {
 		
 		query.doQuery();
 		
-		Enumeration<?> e = query.getMasterFiles();
-		
-		while(e.hasMoreElements())
-		{
-			String name = (String)e.nextElement();
-			
-			if(name.equals("master-file.properties")) {
-				return;
-			}
-		}
-		
-		fail("Cannot find master-file.properties from project");
+		assertThat(query.getMasterFiles(), hasItem("master-file.properties"));
 	}
 
 }

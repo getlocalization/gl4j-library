@@ -1,16 +1,19 @@
 package com.getlocalization.data.files;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.getlocalization.client.Query;
 import com.getlocalization.client.QueryException;
 import com.getlocalization.client.QuerySecurityException;
-
-
-import java.io.*;
-import java.util.zip.*;
-import java.util.*;
-import org.json.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ListMasterFilesQuery extends Query {
   
@@ -26,7 +29,6 @@ public class ListMasterFilesQuery extends Query {
 	public ListMasterFilesQuery(String projectId)
 	{
 		this.projectId = projectId;
-		masterFiles = new Vector();
 	}
 	
 	@Override
@@ -41,9 +43,16 @@ public class ListMasterFilesQuery extends Query {
 				JSONObject files = new JSONObject(new String(filesJson));
 				JSONArray fileArray = files.getJSONArray("master_files");
 				
-				for(int i=0;i<fileArray.length();i++)
-				{
-					masterFiles.add((String)fileArray.get(i));
+				int nboFiles = fileArray.length();
+				if (nboFiles > 0) {
+  				List<String> fileList = new ArrayList<String>(fileArray.length());
+  				for(int i=0;i<fileArray.length();i++)
+  				{
+  					fileList.add((String)fileArray.get(i));
+  				}
+  				masterFiles = Collections.unmodifiableList(fileList);
+				} else {
+				  masterFiles = Collections.emptyList();
 				}
 			}
 			catch(JSONException jse)
@@ -59,11 +68,11 @@ public class ListMasterFilesQuery extends Query {
 		}
 	}
 	
-	public Enumeration getMasterFiles()
+	public List<String> getMasterFiles()
 	{
-		return masterFiles.elements();
+		return masterFiles;
 	}
 
 	private String projectId; 
-	private Vector masterFiles;
+	private List<String> masterFiles = Collections.emptyList();
 }

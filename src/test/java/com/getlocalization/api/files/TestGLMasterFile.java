@@ -41,7 +41,7 @@ public class TestGLMasterFile {
 		try
 		{
 			GLProject project = new GLProject("javatestsuite", "javatestuser", "asdf1234");
-			GLMasterFile masterFile = new GLMasterFile(project, testFileName, "javaproperties");
+			GLMasterFile masterFile = new GLMasterFile(project, testFileName, FileFormat.javaproperties);
 			
 			if(masterFile.isAvailableRemotely())
 				fail("File " + testFileName + " is already available!");
@@ -51,7 +51,7 @@ public class TestGLMasterFile {
 			if(!masterFile.isAvailableRemotely())
 				fail("File " + testFileName + " is not available!");
 			
-			GLMasterFile masterFile2 = new GLMasterFile(project, testFileName, "javaproperties");
+			GLMasterFile masterFile2 = new GLMasterFile(project, testFileName, FileFormat.javaproperties);
 			masterFile2.push();
 		}
 		catch(GLException ex)
