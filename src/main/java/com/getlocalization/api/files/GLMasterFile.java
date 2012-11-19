@@ -15,17 +15,19 @@ import com.getlocalization.data.files.UpdateMasterFileQuery;
  */
 public class GLMasterFile extends File {
 
-	/**
+  private static final long serialVersionUID = 1L;
+  
+  /**
 	 * Creates a new <i>GLMasterFile</i> instance by converting the given pathname string into an abstract pathname.
 	 * 
 	 * @param pathname Path to master file
 	 */
-	public GLMasterFile(GLProject project, String pathname, String platformId)
+	public GLMasterFile(GLProject project, String pathname, FileFormat fileFormat)
 	{
 		super(pathname);
 		
 		this.myProject = project;
-		this.platformId = platformId;
+		this.fileFormat = fileFormat;
 	}
 	
 	/**
@@ -47,26 +49,19 @@ public class GLMasterFile extends File {
 		{
 			query.doQuery();
 			
-			Enumeration e = query.getMasterFiles();
-			
-			boolean success = false;
-			while(e.hasMoreElements())
-			{
-				String name = (String)e.nextElement();
-				
-				if(name.equals(getName()))
-					success = true;
-			}
-			
-			createdToServer = success;
-			
-			return createdToServer;
+			for (String masterFile : query.getMasterFiles()) {
+        if (masterFile.equals(getName())) {
+          return true;
+        }
+      }
+			return false;
 		}
 		catch(QueryException e) {
-			if(e.getStatusCode() == 401)
+			if(e.getStatusCode() == 401) {
 				throw new GLException("Authentication error, please check your username and password" + e.getMessage());
-			else
+			} else {
 				throw new GLException("Error when processing the query: " + e.getMessage());
+			}
 		}
 		catch(Exception e)
 		{
@@ -80,10 +75,11 @@ public class GLMasterFile extends File {
 	 */
 	public void push() throws GLException
 	{
-		if(isAvailableRemotely())
+		if(isAvailableRemotely()) {
 			update();
-		else
+		} else {
 			add();
+		}
 	}
 	
 	private void update() throws GLException
@@ -103,7 +99,7 @@ public class GLMasterFile extends File {
 
 	private void add() throws GLException
 	{
-		CreateMasterFileQuery query = new CreateMasterFileQuery(this, myProject.getProjectName(), platformId, myProject.getLanguageId());
+		CreateMasterFileQuery query = new CreateMasterFileQuery(this, myProject.getProjectName(), fileFormat, myProject.getLanguageId());
 		
 		query.setBasicAuth(myProject.getUsername(), myProject.getPassword());
 		
@@ -119,6 +115,6 @@ public class GLMasterFile extends File {
 
 	private boolean createdToServer = false;
 	private GLProject myProject;
-	private String platformId;
+	private FileFormat fileFormat;
 
 }

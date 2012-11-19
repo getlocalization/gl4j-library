@@ -1,5 +1,6 @@
 package com.getlocalization.data.files;
 
+import com.getlocalization.api.files.FileFormat;
 import com.getlocalization.client.Query;
 import com.getlocalization.client.QueryException;
 import com.getlocalization.client.QuerySecurityException;
@@ -22,11 +23,11 @@ public class CreateMasterFileQuery extends Query {
 	 * @param languageId Standard IANA language code.
 	 * 
 	 */
-	public CreateMasterFileQuery(File file, String projectId, String platformId, String languageId)
+	public CreateMasterFileQuery(File file, String projectId, FileFormat fileFormat, String languageId)
 	{
 		this.file = file;
 		this.projectId = projectId;
-		this.platformId = platformId;
+		this.fileFormat = fileFormat;
 		this.languageId = languageId;
 	}
 	
@@ -35,7 +36,7 @@ public class CreateMasterFileQuery extends Query {
 		try
 		{
 			String url = "https://www.getlocalization.com/" + projectId + 
-					"/api/create-master/" + platformId + "/" + languageId;
+					"/api/create-master/" + fileFormat.name() + "/" + languageId;
 			
 			postFile(this.file, url);
 		}
@@ -47,9 +48,9 @@ public class CreateMasterFileQuery extends Query {
 	}
 
 	private File file;
-	private String projectId, 
-				platformId, 
-				languageId;
+	private String projectId; 
+	private String languageId;
+  private FileFormat fileFormat;
 	
 
 }
