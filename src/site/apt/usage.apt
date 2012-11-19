@@ -1,0 +1,39 @@
+Get Localization Java API
+
+  Get Localization Java API provides an easy way to manage master and translation files from a Java application.
+
+  Source code and Java docs for Java API are available at {{{https://github.com/pmuilu/gl4j-library}GitHub}}.
+   
+* Example: Create a new or update an existing master file to Get Localization project
+
+---
+GLProject project = new GLProject("projectName",
+"username",
+"password");
+
+GLMasterFile masterFile = new GLMasterFile(project, "values/strings.xml", "android");
+
+try {
+     masterFile.push();
+} catch (GLException e) {
+    // Handle exception, e.g. wrong username/password
+}
+---
+
+* Example: Download all translations to given directory
+
+---
+GLProject project = new GLProject("myProject",
+"username",
+"password");
+
+GLTranslations translations = new GLTranslations(project);
+
+try {
+    translations.pull("/my/directory");
+} catch (GLException e) {
+    // Handle exception, e.g. wrong username/password
+} catch (GLServerBusyException e) {
+    // Too much traffic on the server right now, try again later.
+}
+---
